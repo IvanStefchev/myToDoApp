@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
-
 function App() {
-  const [tasks, setTasks] = useState([]);
+  // Зареждаме задачите от localStorage при първоначален рендер
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    return savedTasks ? JSON.parse(savedTasks) : [];
+  });
   const [input, setInput] = useState('');
+
+  // Записваме задачите в localStorage при промяна на tasks
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   // Добавяне на нова задача
   const addTask = () => {
